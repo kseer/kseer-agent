@@ -1,0 +1,12 @@
+# Benign defaults. cluster.name is a free-form label string only.
+cluster:
+  name: default
+
+# curlimages/curl is used so the POC script can run `curl` inside the pod.
+# Swap to your own registry account if you want to avoid Docker Hub rate limits.
+image:
+  repository: docker.io/curlimages/curl
+  tag: "8.10.1"
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
