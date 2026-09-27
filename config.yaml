@@ -1,0 +1,5 @@
+# Example config. The benign POC binary does not read this file and does not
+# contact anything; it exists only so `./kseer-agent --config config.yaml`
+# from the vendor README runs without error.
+cluster:
+  name: poc-cluster
