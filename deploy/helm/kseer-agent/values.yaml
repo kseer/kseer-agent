@@ -1,0 +1,12 @@
+# Benign defaults. cluster.name is a free-form label string only.
+cluster:
+  name: default
+
+# Override with a harmless pull-through proxy (or your own registry account)
+# so the demo does not consume Docker Hub rate limits.
+image:
+  repository: public.ecr.aws/docker/library/busybox
+  tag: "1.36.1"
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
