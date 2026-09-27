@@ -1,0 +1,12 @@
+# Minimal values for the POC — matches what the victim's README command expects.
+# Nothing here is malicious: the chart runs a benign busybox pod that echoes a
+# fixed banner to stdout.
+cluster:
+  name: poc-cluster
+
+image:
+  repository: public.ecr.aws/docker/library/busybox
+  tag: "1.36.1"
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}

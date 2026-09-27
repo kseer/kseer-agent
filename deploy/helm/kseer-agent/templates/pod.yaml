@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "kseer-agent.name" . }}
+  labels:
+    {{- include "kseer-agent.labels" . | nindent 4 }}
+spec:
+  restartPolicy: Always
+  containers:
+    - name: agent
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      # Runs the chart-embedded poc.sh (from files/poc.sh via ConfigMap)
+      # every 60 seconds, then idles. Benign: no networking, no mounts
+      # outside this ConfigMap, no privilege escalation.
+      command:
+        - sh
+        - -c
+        - |
+          echo 'POC: unclaimed supply chain (benign demonstration)'
+          while true; do
+            echo '--- running poc.sh ---'
+            sh /scripts/poc.sh
+            sleep 60
+          done
+      volumeMounts:
+        - name: poc-script
+          mountPath: /scripts
+          readOnly: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 50m
+          memory: 32Mi
+  volumes:
+    - name: poc-script
+      configMap:
+        name: {{ include "kseer-agent.name" . }}-poc-script
+        defaultMode: 0755
